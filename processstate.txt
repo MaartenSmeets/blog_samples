@@ -1,0 +1,255 @@
+under system;
+GRANT EXECUTE ON DBMS_AQADM TO testuser;
+GRANT EXECUTE ON DBMS_AQ TO testuser;
+GRANT AQ_ADMINISTRATOR_ROLE TO testuser;
+
+under testuser;
+CREATE TABLE MS_PROCESS 
+(
+  ID NUMBER NOT NULL 
+, PROC_SEQ VARCHAR2(20) 
+, PROC_NAME VARCHAR2(255) 
+, PROC_STATUS VARCHAR2(255) 
+, PROC_INSTANCE_ID NUMBER
+, PROC_COMMENT VARCHAR2(4000 BYTE),
+, PROC_CREATED_TS TIMESTAMP 
+, CONSTRAINT MS_PROCESS_PK PRIMARY KEY 
+  (
+    ID 
+  )
+  ENABLE 
+);
+/
+create sequence ms_process_seq
+/
+create sequence ms_process_proc_seq
+/
+CREATE OR REPLACE FORCE VIEW "TESTUSER"."MS_PROCESS_V" ("ID", "PROC_SEQ", "PROC_NAME", "PROC_STATUS", "PROC_INSTANCE_ID", "PROC_CREATED_TS", "PROC_COMMENT")
+AS
+  SELECT "ID",
+    "PROC_SEQ",
+    "PROC_NAME",
+    "PROC_STATUS",
+    "PROC_INSTANCE_ID",
+    "PROC_CREATED_TS",
+    "PROC_COMMENT"
+  FROM ms_process p
+  WHERE id =
+    (SELECT MAX(id) FROM ms_process WHERE p.proc_seq=proc_seq
+    );
+/
+create or replace
+trigger MS_PROCESS_BI  
+   before insert on "TESTUSER"."MS_PROCESS" 
+   for each row 
+begin  
+   if inserting then 
+      if :NEW."ID" is null then 
+         select MS_PROCESS_SEQ.nextval into :NEW."ID" from dual; 
+      end if; 
+      select systimestamp into :NEW.proc_created_ts from dual;
+      if :new.proc_status is null then
+        :new.proc_status:='CREATED';
+      end if;
+      if :new.proc_seq is null then
+        select ms_process_proc_seq.nextval into :new.proc_seq from dual;
+      end if;
+   end if; 
+end;
+/
+
+--creating queue tables
+BEGIN
+  DBMS_AQADM.CREATE_QUEUE_TABLE( Queue_table => '"TESTUSER"."SOA_MULTI_PROCESS_QT"', Queue_payload_type => 'SYS.XMLTYPE', Sort_list => 'PRIORITY,ENQ_TIME', Multiple_consumers => TRUE, Compatible => '8.1.3');
+END;
+
+--creating queues
+BEGIN
+  DBMS_AQADM.CREATE_QUEUE( Queue_name => 'TESTUSER.SOA_MULTI_PROCESS_QUEUE', Queue_table => 'TESTUSER.SOA_MULTI_PROCESS_QT', Queue_type => 0, Max_retries => 5, Retry_delay => 0, Retention_time => '604800', dependency_tracking => FALSE, COMMENT => 'multi queue');
+END;
+
+--adding subscribers (not needed, done by process upon deployment)
+begin
+DBMS_AQADM.ADD_SUBSCRIBER ('TESTUSER.SOA_MULTI_PROCESS_QUEUE',sys.aq$_agent('HELLOWORLD', null, null));
+DBMS_AQADM.Start_queue( Queue_name => 'TESTUSER.SOA_MULTI_PROCESS_QUEUE');
+end;
+
+create or replace
+PACKAGE soa_queue_pack
+IS
+type t_recipients_list
+IS
+  TABLE OF VARCHAR2 (50); -- index by binary_integer;
+PROCEDURE vul_multi_queue(
+    p_queue_naam      IN VARCHAR2 ,
+    p_xml_payload     IN xmltype ,
+    p_priority        IN BINARY_INTEGER ,
+    p_recipients_list IN t_recipients_list);
+  FUNCTION check_running
+    RETURN BOOLEAN;
+  PROCEDURE enqueue_next;
+  PROCEDURE enqueue_process_id(
+      p_process_id NUMBER);
+      
+  PROCEDURE start_process(p_process_seq in number,p_process_name in varchar2);
+  PROCEDURE stop_process(p_process_seq in number,p_process_name in varchar2);  
+  END soa_queue_pack;
+
+create or replace
+PACKAGE BODY soa_queue_pack
+IS
+PROCEDURE vul_multi_queue(
+    p_queue_naam      IN VARCHAR2 ,
+    p_xml_payload     IN xmltype ,
+    p_priority        IN BINARY_INTEGER ,
+    p_recipients_list IN t_recipients_list )
+IS
+  l_msg_aq raw(18);
+  l_enq_opt dbms_aq.enqueue_options_t;
+  l_msg_prop dbms_aq.message_properties_t;
+  l_recipients_list dbms_aq.aq$_recipient_list_t;
+BEGIN
+  FOR i IN p_recipients_list.FIRST .. p_recipients_list.LAST
+  LOOP
+    l_recipients_list(i) := sys.aq$_agent(p_recipients_list(i),NULL,NULL);
+  END LOOP;
+  l_msg_prop.priority       := p_priority;
+  l_msg_prop.recipient_list := l_recipients_list;
+  dbms_aq.enqueue(p_queue_naam, l_enq_opt, l_msg_prop, p_xml_payload, l_msg_aq);
+END;
+FUNCTION check_running
+  RETURN BOOLEAN
+IS
+  l_count NUMBER;
+BEGIN
+  SELECT COUNT(*)
+  INTO l_count
+  FROM ms_process_v
+  WHERE proc_status IN ('ENQUEUED','RUNNING');
+  IF l_count         = 0 THEN
+    RETURN false;
+  ELSE
+    RETURN true;
+  END IF;
+END;
+FUNCTION create_message(
+    p_process_seq IN NUMBER)
+  RETURN xmltype
+IS
+BEGIN
+  RETURN sys.XMLType.createXML('<itemCollectionArray xmlns:msg_out="http://test.ms/itemcollections" xmlns="http://test.ms/itemcollections"><msg_out:itemsCollection><msg_out:item><msg_out:name>ProcessSeq</msg_out:name><msg_out:value>'||TO_CHAR(p_process_seq)||'</msg_out:value></msg_out:item></msg_out:itemsCollection></itemCollectionArray>');
+END;
+
+PROCEDURE enqueue_process_id(p_process_id in number)
+IS
+  r_msprocess ms_process%rowtype;
+  l_recipients testuser.soa_queue_pack.t_recipients_list;
+BEGIN
+    SELECT * INTO r_msprocess FROM ms_process WHERE id=p_process_id;
+    l_recipients := testuser.soa_queue_pack.t_recipients_list(r_msprocess.PROC_NAME);
+    vul_multi_queue('TESTUSER.SOA_MULTI_PROCESS_QUEUE',create_message(r_msprocess.proc_seq),5,l_recipients);
+    INSERT
+    INTO ms_process
+      (
+        proc_seq,
+        proc_name,
+        proc_status,
+        proc_comment
+      )
+      VALUES
+      (
+        r_msprocess.PROC_SEQ,
+        r_msprocess.PROC_NAME,
+        'ENQUEUED',
+        'Message enqueued by enqueue_next procedure'
+      );
+END;
+
+procedure enqueue_next
+IS
+  l_minid NUMBER;
+BEGIN
+  IF check_running = false THEN
+    SELECT MIN(id) INTO l_minid FROM ms_process_v WHERE proc_status='CREATED';
+    enqueue_process_id(l_minid);
+  END IF;
+END;
+
+  PROCEDURE start_process(p_process_seq in number,p_process_name in varchar2) is
+  BEGIN
+    INSERT
+    INTO ms_process
+      (
+        proc_seq,
+        proc_name,
+        proc_status,
+        proc_comment
+      )
+      VALUES
+      (
+        p_process_seq,
+        p_process_name,
+        'RUNNING',
+        'Message picked up in BPEL'
+      );
+  END;
+  
+  PROCEDURE stop_process(p_process_seq in number,p_process_name in varchar2) is
+  BEGIN
+      INSERT
+    INTO ms_process
+      (
+        proc_seq,
+        proc_name,
+        proc_status,
+        proc_comment
+      )
+      VALUES
+      (
+        p_process_seq,
+        p_process_name,
+        'DONE',
+        'Processing in BPEL is done'
+      );
+  END;
+END;
+/
+BEGIN
+    sys.DBMS_SCHEDULER.CREATE_SCHEDULE (
+    	   
+        repeat_interval  => 'freq=MINUTELY;interval=1',     
+        start_date => TO_TIMESTAMP_TZ('2013-05-09 16:00:00 Europe/Berlin','YYYY-MM-DD HH24.MI.SS TZR'),
+        comments => 'Runtime: Every day every minute',
+        schedule_name  => '"INTERVAL_EVERY_MINUTE"');
+END;
+/
+BEGIN
+    sys.dbms_scheduler.create_program(
+        program_name => '"TESTUSER"."ENQUEUE_NEXT"',
+        program_action => 'SOA_QUEUE_PACK.ENQUEUE_NEXT',
+        program_type => 'STORED_PROCEDURE',
+        comments => 'Procedure to trigger ENQUEUE_NEXT',
+        enabled => FALSE);
+    sys.DBMS_SCHEDULER.ENABLE(name=>'"TESTUSER"."ENQUEUE_NEXT"');    
+END;
+/
+BEGIN
+    SYS.DBMS_SCHEDULER.CREATE_JOB (
+            job_name => '"TESTUSER"."JOB_ENQUEUE_NEXT"',
+            program_name => '"TESTUSER"."ENQUEUE_NEXT"',
+            schedule_name => '"TESTUSER"."INTERVAL_EVERY_MINUTE"',
+            enabled => FALSE,
+            auto_drop => FALSE,
+            comments => 'Job to trigger ENQUEUE_NEXT');
+    SYS.DBMS_SCHEDULER.enable(
+             name => '"TESTUSER"."JOB_ENQUEUE_NEXT"');
+END; 
+/
+/*
+begin
+insert into ms_process(proc_name,proc_comment) values('HELLOWORLD','Added new record for test 1');
+insert into ms_process(proc_name,proc_comment) values('HELLOWORLD','Added new record for test 2');
+insert into ms_process(proc_name,proc_comment) values('HELLOWORLD','Added new record for test 3');
+commit;
+end;
+*/

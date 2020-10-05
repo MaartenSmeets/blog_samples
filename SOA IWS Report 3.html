@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>SOA IWS Report</title>
+      <style type="text/css">
+      div.top { background-color: black; width=100%; color: white; font-size: 22; font-weight: bold; text-align: center; padding-bottom: 10px; margin-bottom: 10px; }
+      table.header { padding=4px;  border:2px solid black;}
+      table.header tr { padding=2px;  border:1px solid black;}
+      table.header td {  text-align: center; border: none;}
+      table.header th { text-align: center; border: none; padding-right: 8px; }
+      table.header th.title { text-align: center; border: none; background-color: #0066CC; color: white}
+      table.results { border-collapse: seperate; padding=4px;  border:2px solid black;}
+      table.results tr { border-collapse: seperate; padding=2px;  border:1px solid black;}
+      table.results td { text-align: center; border: none; white-space: pre-line;}
+      table.results td.groupleft { text-align: center; border: none; border-left:1px solid black; white-space: pre-line;}
+      table.results td.groupright { text-align: center; border: none; border-right:1px solid black; white-space: pre-line;}
+      table.results th { text-align: center; border: none; padding-right: 8px; }
+      table.results th.title { text-align: center; border: none; background-color: #0066CC; color: white }
+      table.results th.emptytitle { text-align: center; border: none; background-color: #FFFFFF; color: white}
+
+      caption { font-weight: bold; text-align: left;}
+
+p { white-space: pre-wrap; }
+
+img.oracleLogo {
+  padding-left:95px;
+  padding-right:95px;
+  padding-top: 17px;
+  padding-right: 17px;
+  background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGgAAAAOCAYAAADDsVnmAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA1RJREFUeNrMWN2N2kAQNicKQMprpICU90AFZ1dwpgJMBYEK7qgArgJzFdipAK4CnPdI50h5jbKp4DITzZ4+zS3srp1EGckC27Mzs/P7rYeJg76/fZ8mYdS++faldawf0884CSdDcppQZpI/pR+2sXbp96wbhfCS3CP4Icq+Pv4QvZa/GSoht3QVkcrZ8A0JruFxIbJi5LCjl2yghy+nn0pub+l+5gsS8Vh7QpNmRxfbcZB7/p91CEwueqeBS46glxPJXEFmnWKDI8RrK5JRJv2InXe4VL30jo1GPfretaYUntDgcLA3Pfdi9VYRwTGcoFIoxl5D2fQBSt8a6GsdzH8DQS1I1mfK5p3iW3OpemR9pCu3VSFZ5KIS7DTyPyW9K4dedtJWJR3zfApo26ZncAqldy96jafNt7Keed/R9TiQSFth3NPnHYwpwWkTulbQ4jJf2xI5J5ttxD/wtLZWAl+hXnSsZOITvM9i5wjJeLath9ZmEet+QCJx2953DfYVZO7vEosVIMr3UFVpR1tMRGtbyszbXWh1mMGbPkO+w9yxwdn3CQ7TEITVPUr7ARwy7dgSUqgOTVtlp63IjSQYV0vOzgGw8kG1mH9FuP9C9hZKM51Iw5AM/gNZtRInh9DGAfkLV5VzQtF7bHUl3R8l0UbIl/z/tHNVOQYol77eN2uMPmvwACfHGR/iEiP3ntZmlOya+Gqx3/LPBZiktu2oY8DfpFbB5scIaP+KGCRUMIfWLjTkqY6RDGMblIk6B72ABIHzBxVA1vdT+nXrQGEr2KwBWy+RBTq2shqxw0TuLRokOMDJpE8FM0i4x15PCu7E6SHGpHJ+wqHYXgAU7KiZgt2564uAyF6p1rYMbMVbCWgDFX6I+ELSmWQfCJpOffQOxBl3jpN/43FG6uDPZC7cXYLZkgAVyDCAzCzPExwuXypbNntuw9fwbifgRVesCTiX8ZlkDhUUskaf/UoHYDoGrF1isg4UktqGfqtSVON88AVInbYR5axlXuH6hp7NOrbbTGZCGQn/rR3PHYf9GuZnHrv2VQWpDVrYeh0wDL+emR3s9AVstvEgvBt4dC9fFpKQ9Wcg+wKCu4b5l8sJfez5krCEM80iImmNBjIyk4oAvcYFgn4JMADJYLtVgTm2PgAAAABJRU5ErkJggg==);
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+
+
+    </style>
+   </head>
+   <body>
+      <div class="top">
+         <img src="" alt="" class="oracleLogo" style="vertical-align:middle">
+         <span>SOA IWS Report</span>
+      </div>
+      <div class="header" xmlns="http://www.w3.org/TR/REC-html40">
+         <table class="header">
+            <tbody><tr>
+               <th colspan="1" class="title">Snapshot</th>
+               <th colspan="1" class="title">Snapshot Id</th>
+               <th colspan="1" class="title">Snapshot Timestamp</th>
+               <th colspan="1" class="title">Duration</th>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>Begin Snapshot</td>
+               <td>21</td>
+               <td>2015-12-02T20:17:08+0100</td>
+               <td>
+            </td></tr>
+            <tr>
+               <td>End Snapshot</td>
+               <td>25</td>
+               <td>2015-12-02T20:20:56+0100</td>
+               <td>3 mins 47 secs </td>
+            </tr>
+         </tbody></table>
+         <br>
+      </div>
+      <div class="header" xmlns="http://www.w3.org/TR/REC-html40">
+         <table class="header">
+            <tbody><tr>
+               <th colspan="1" class="title">Host Name</th>
+               <th colspan="1" class="title">Weblogic Domain</th>
+               <th colspan="1" class="title">SOA Server</th>
+               <th colspan="1" class="title">Platform</th>
+               <th colspan="1" class="title">CPU</th>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>localhost.localdomain</td>
+               <td>base_domain</td>
+               <td>soa_server1</td>
+               <td>Linux</td>
+               <td>4</td>
+            </tr>
+         </tbody></table>
+         <br>
+      </div>
+      <h2 xmlns="http://www.w3.org/TR/REC-html40">Snapshot Statistics</h2>
+      <ul xmlns="http://www.w3.org/TR/REC-html40">
+         <li>
+            <a href="#sys_res_stats">1. System Resource Usage</a>
+         </li>
+         <ul>
+            <li>
+               <a href="#jvm_sys_load">A. Java Virtual Machine Statistics</a>
+            </li>
+            <li>
+               <a href="#soa_ds">B. SOA DataSource Statistics</a>
+            </li>
+            <li>
+               <a href="#soa_wm">C. SOA WorkManager Statistics</a>
+            </li>
+         </ul>
+         <li>
+            <a href="#one">2. Composite (Rollup) Statistics (Top 10)</a>
+         </li>
+         <ul>
+            <li>
+               <a href="#one_a">A. Endpoint Statistics</a>
+            </li>
+            <ul>
+               <li>
+                  <a href="#one_a_i">Composite Inbound</a>
+               </li>
+               <li>
+                  <a href="#one_a_ii">Composite Outbound</a>
+               </li>
+            </ul>
+            <li>
+               <a href="#one_b">B. Backups in Internal Queues</a>
+            </li>
+            <ul>
+               <li>
+                  <a href="#one_b_i_bpel">BPEL SE Dispatcher Queue</a>
+               </li>
+               <li>
+                  <a href="#one_b_i_edn">EDN Queue</a>
+               </li>
+            </ul>
+         </ul>
+         <li>
+            <a href="#two">3. Slowest Composite Endpoints (Top 10)</a>
+         </li>
+         <ul>
+            <li>
+               <a href="#two_a">A. Inbound Endpoints</a>
+            </li>
+            <li>
+               <a href="#two_b">B. Outbound Endpoints</a>
+            </li>
+            <li>
+               <a href="#two_c">C. Wire</a>
+            </li>
+         </ul>
+         <li>
+            <a href="#three">4. Backups in Internal Queues (Top 10)</a>
+         </li>
+         <ul>
+            <li>
+               <a href="#three_b_bpel">A. BPEL SE Dispatcher Queue</a>
+            </li>
+            <li>
+               <a href="#three_b_edn">B. EDN Queue</a>
+            </li>
+         </ul>
+         <li>
+            <a href="#four">5. Longest running Business Process (Top 10)</a>
+         </li>
+         <ul>
+            <li>
+               <a href="#four_a">A. Asynchronous Processes</a>
+            </li>
+            <li>
+               <a href="#four_b">B. Synchronous Processes</a>
+            </li>
+         </ul>
+         <li>
+            <a href="#five">6. Most time consuming Business Process activities (Top 10)</a>
+         </li>
+      </ul>
+      <div class="results" xmlns="http://www.w3.org/TR/REC-html40">
+         <br>
+         <h2 id="sys_res_stats">1. System Resource Usage</h2>
+         <hr>
+         <p>These statistics are derived by periodically polling the values (every 10 seconds) and then averaging them over the report interval.</p>
+         <h3 id="jvm_sys_load">A. Java Virtual Machine Statistics</h3>
+         <p>Average Load column indicates CPU utilization and is reported using the System Load Average for the last minute.  This is based on Java SE's OperatingSystemMXBean.getSystemLoadAverage() call. 
+
+Average Heap and Average Non Heap columns indicate Memory Utilization for JVM heap and Non-heap Memory respectively. JVM heap is created at JVM startup and is used to allocate memory for all class instances and arrays. It is reclaimed by GC. JVM non-heap is used for storing per-class structure such as field and method data, static, native code and shard among all threads. This area is not subject to be garbage collected.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="1" class="title">Server Name</th>
+               <th colspan="1" class="title">Avg Load</th>
+               <th colspan="1" class="title">Avg Heap</th>
+               <th colspan="1" class="title">Avg Non Heap</th>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>soa_server1</td>
+               <td>1.90 </td>
+               <td>768.5 MB</td>
+               <td>596.6 MB</td>
+            </tr>
+         </tbody></table>
+         <br>
+         <h3 id="soa_ds">B. SOA DataSource Statistics</h3>
+         <p>Average Active Connections reflects the number of 
+connections currently in use by applications. 
+
+Max Capacity column shows the configured maximum number of physical 
+connections that the connection pool can contain. Note that * next to 
+the value indicates that the value changed during the report interval</p>
+         <table class="results">
+            <caption>Server Name: soa_server1</caption>
+            <tbody><tr>
+               <th colspan="1" class="title">Datasource Name</th>
+               <th colspan="1" class="title">Avg Active Connections</th>
+               <th colspan="1" class="title">Configured Max Capacity</th>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>SOALocalTxDataSource</td>
+               <td>3</td>
+               <td>300</td>
+            </tr>
+            <tr>
+               <td>SOADataSource</td>
+               <td>3</td>
+               <td>300</td>
+            </tr>
+         </tbody></table>
+         <br>
+         <br>
+         <h3 id="soa_wm">C. SOA WorkManager Statistics</h3>
+         <p>IWS periodically polls for the current active threads. The 
+average number of the active threads are then aggregated over time.
+
+Average pending requests is the average number of requests waiting to be
+ processed by the work manager.  
+
+Max Constraint Name column shows the configured maximum number of 
+concurrent threads that can be allocated to execute requests. Note that *
+ next to the value indicates that the value was changed during the 
+report interval. A blank value indicates that constraint is not set.</p>
+         <table class="results">
+            <caption>Server Name: soa_server1</caption>
+            <tbody><tr>
+               <th colspan="1" class="title">WorkManager Name</th>
+               <th colspan="1" class="title">Avg Active Threads</th>
+               <th colspan="1" class="title">Avg Pending Requests</th>
+               <th colspan="1" class="title">Configured Max Constraint Name</th>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>SOA_Request_WM</td>
+               <td>0.47</td>
+               <td>0.8</td>
+               <td>SOAIncomingRequests_maxThreads (60)</td>
+            </tr>
+            <tr>
+               <td>wm/SOAWorkManager</td>
+               <td>0</td>
+               <td>0</td>
+               <td>
+            </td></tr>
+            <tr bgcolor="#FFFFCC">
+               <td>default_MediatorParallelRouting</td>
+               <td>0</td>
+               <td>0</td>
+               <td>SOAInternalProcessing_maxThreads (150)</td>
+            </tr>
+            <tr>
+               <td>default_Analytics</td>
+               <td>0</td>
+               <td>0</td>
+               <td>
+            </td></tr>
+            <tr bgcolor="#FFFFCC">
+               <td>default_Adapters</td>
+               <td>0</td>
+               <td>0</td>
+               <td>
+            </td></tr>
+            <tr>
+               <td>default_dspEngine</td>
+               <td>0</td>
+               <td>0</td>
+               <td>SOAInternalProcessing_maxThreads (150)</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>SOA_Default_WM</td>
+               <td>0</td>
+               <td>0</td>
+               <td>
+            </td></tr>
+            <tr>
+               <td>default_dspInvoke</td>
+               <td>0</td>
+               <td>0</td>
+               <td>SOAInternalProcessing_maxThreads (150)</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>SOA_Notification_WM</td>
+               <td>0</td>
+               <td>0</td>
+               <td>SOAInternalProcessing_maxThreads (150)</td>
+            </tr>
+            <tr>
+               <td>SOA_DataSourceBound_WM</td>
+               <td>0</td>
+               <td>0</td>
+               <td>SOAInternalProcessing_maxThreads (150)</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>SOA_EDN_WM</td>
+               <td>0</td>
+               <td>0</td>
+               <td>SOAIncomingRequests_maxThreads (60)</td>
+            </tr>
+         </tbody></table>
+         <br>
+         <br>
+      </div>
+      <div class="results" xmlns="http://www.w3.org/TR/REC-html40">
+         <br>
+         <h2 id="one">2. Composite (Rollup) Statistics (Top 10)</h2>
+         <hr>
+         <p>Composite level aggregate statistics indicate flow rate 
+(throughput/transactions per second) and latency (in milliseconds) for 
+the endpoints and internal backups.</p>
+         <h3 id="one_a">A. Endpoint Statistics</h3>
+         <p>Indicate flow rate (throughput) and latency for the 
+endpoints.
+
+Composite (rollup) Endoint statistics are derived by aggregating 
+individual endpoint statistics (shown in Section 3) by taking weighted 
+average of latency values for all endpoints (inbounds and outbounds) for
+ a composite. Example shown below, when there are two inbound endpoints 
+(EP1 and EP2)  of a composite (Composite1) with counts (total number of 
+executions during the report interval) and latencies.
+
+Endpoint	Composite	Count	Latency 
+------------------------------------------------------
+EP1		Composite1	C1		L1 
+EP2		Composite1	C2		L2
+ 
+Composite (Rollup) Inbound Latency = ((C1 * L1) + (C2 * L2)) / (C1 + C2)
+
+Latency: Defined as the round-trip time for the thread to return back at
+ the measurement point. For inbound endpoints a timer is started as soon
+ as client thread enters Binding/Adapter layer. The client thread then 
+goes though Service Infrastructure to downstream components as defined 
+in the flow. The timer is stopped when the thread returns back from 
+Service Infrastructure to the measurement point. This time spent in 
+round-trip represents inbound latency statistics for this endpoint for 
+one execution. Similarly for outbound endpoints the timer is started 
+just before the call to external service and stopped when the thread 
+returns. 
+
+For a given endpoint the latencies for all such executions in a report 
+interval are aggregated and averaged by taking sum of execution times 
+and dividing by the number of executions. 
+
+Total column represents the total number of successful executions either
+ during the report interval or cumulatively.
+Fault column indicates total number of failed executions either during 
+the report interval or cumulatively - calls that resulted in exceptions 
+being thrown from downstream component.
+TPS column represents transactions per second. This is calculated by 
+dividing the total number of executions by the report interval.  </p>
+         <h4 id="one_a_i">Composite Inbound</h4>
+         <p>Statistics for inbound calls as measured at composite boundary.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="3" class="title">SOA Metadata</th>
+               <th colspan="2" class="title">Cumulative Metrics</th>
+               <th colspan="4" class="title">Report Metrics</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Latency (ms)</th>
+               <th colspan="1" class="title">TPS</th>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldXMLJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td class="groupleft">1,644</td>
+               <td class="groupright">0</td>
+               <td>1,644</td>
+               <td>0</td>
+               <td>13.31</td>
+               <td>7.21</td>
+            </tr>
+            <tr>
+               <td>HelloWorldXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td class="groupleft">1,644</td>
+               <td class="groupright">0</td>
+               <td>1,644</td>
+               <td>0</td>
+               <td>13.08</td>
+               <td>7.21</td>
+            </tr>
+         </tbody></table>
+         <br>
+         <h4 id="one_a_ii">Composite Outbound</h4>
+         <p>Statistics for outbound calls as measured at composite boundary.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="3" class="title">SOA Metadata</th>
+               <th colspan="2" class="title">Cumulative Metrics</th>
+               <th colspan="4" class="title">Report Metrics</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Latency (ms)</th>
+               <th colspan="1" class="title">TPS</th>
+            </tr>
+         </tbody></table>
+         <br>
+         <h3 id="one_b">B. Backups in Internal Queues</h3>
+         <p>Composite (rollup) Backup statistics are derived by 
+combining data for all internal queues (details in Section 4) for all 
+processes in a composite.
+
+Added: The number (count) of messages added to the queue during the 
+report interval.
+Removed: The number of messages removed from the queue during the report
+ interval.
+Closed: The number of messages closed during the report interval.
+
+Active value represents the number of messages being processed since the
+ server start till the end of report interval.</p>
+         <h4 id="one_b_i_bpel">BPEL SE Dispatcher Queue</h4>
+         <p>Aggregate statistics for backups in BPEL Internal Dispatcher queue.
+
+Backlog value is the number of messages accumulated since the server start till the end of report interval.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="3" class="title">SOA Metadata</th>
+               <th colspan="4" class="title">Report Counts</th>
+               <th colspan="2" class="title">Cumulative Counts</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Added</th>
+               <th colspan="1" class="title">Removed</th>
+               <th colspan="1" class="title">Closed</th>
+               <th colspan="1" class="title">Faulted</th>
+               <th colspan="1" class="title">Active</th>
+               <th colspan="1" class="title">Backlog</th>
+            </tr>
+         </tbody></table>
+         <h4 id="one_b_i_edn">EDN Queue</h4>
+         <p>Aggregate Stats for backups in EDN internal queues.
+
+Backlog value is the number of messages in the EDN internal queues at the end of report interval.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="3" class="title">SOA Metadata</th>
+               <th colspan="4" class="title">Report Counts</th>
+               <th colspan="2" class="title">Cumulative Counts</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Added</th>
+               <th colspan="1" class="title">Removed</th>
+               <th colspan="1" class="title">Closed</th>
+               <th colspan="1" class="title">Faulted</th>
+               <th colspan="1" class="title">Active</th>
+               <th colspan="1" class="title">Backlog</th>
+            </tr>
+         </tbody></table>
+      </div>
+      <div class="results" xmlns="http://www.w3.org/TR/REC-html40">
+         <br>
+         <h2 id="two">3. Slowest Composite Endpoints (Top 10)</h2>
+         <hr>
+         <p>Aggregate statistics indicating latency (in milliseconds) 
+and flow rate (throughput) for the slowest endpoints. Note that latency 
+is used for slowness criterion.</p>
+         <h3 id="two_a">A. Inbound Endpoints</h3>
+         <p>Statistics for inbound calls as measured at composite boundary.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="5" class="title">SOA Metadata</th>
+               <th colspan="2" class="title">Cumulative Metrics</th>
+               <th colspan="4" class="title">Report Metrics</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Service Name</th>
+               <th colspan="1" class="title">Component Type</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Latency (ms)</th>
+               <th colspan="1" class="title">TPS</th>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldXMLJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>helloworldxmljs_client_ep</td>
+               <td>Web Service Binding</td>
+               <td class="groupleft">1,644</td>
+               <td class="groupright">0</td>
+               <td>1,644</td>
+               <td>0</td>
+               <td>13.31</td>
+               <td>7.21</td>
+            </tr>
+            <tr>
+               <td>HelloWorldXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>helloworldxmlprocess_client_ep</td>
+               <td>Web Service Binding</td>
+               <td class="groupleft">1,644</td>
+               <td class="groupright">0</td>
+               <td>1,644</td>
+               <td>0</td>
+               <td>13.08</td>
+               <td>7.21</td>
+            </tr>
+         </tbody></table>
+         <br>
+         <h3 id="two_b">B. Outbound Endpoints</h3>
+         <p>Statistics for outbound calls as measured at composite boundary.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="5" class="title">SOA Metadata</th>
+               <th colspan="2" class="title">Cumulative Metrics</th>
+               <th colspan="4" class="title">Report Metrics</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Reference Name</th>
+               <th colspan="1" class="title">Component Type</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Latency (ms)</th>
+               <th colspan="1" class="title">TPS</th>
+            </tr>
+         </tbody></table>
+         <br>
+         <h3 id="two_c">C. Wire</h3>
+         <p>Statistics such as latency and TPS recorded at composite wires connecting the components.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="5" class="title">SOA Metadata</th>
+               <th colspan="2" class="title">Cumulative Metrics</th>
+               <th colspan="4" class="title">Report Metrics</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Wire Name</th>
+               <th colspan="1" class="title">Component Type</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Total</th>
+               <th colspan="1" class="title">Fault</th>
+               <th colspan="1" class="title">Latency (ms)</th>
+               <th colspan="1" class="title">TPS</th>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldJSXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>RestService|HelloWorldJSXML/RestService</td>
+               <td>Fabric</td>
+               <td class="groupleft">1,644</td>
+               <td class="groupright">0</td>
+               <td>1,644</td>
+               <td>0</td>
+               <td>9.87</td>
+               <td>7.21</td>
+            </tr>
+            <tr>
+               <td>HelloWorldXMLJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>helloworldxmljs_client_ep|HelloWorldXMLJS/helloworldxmljs_client</td>
+               <td>Fabric</td>
+               <td class="groupleft">1,644</td>
+               <td class="groupright">0</td>
+               <td>1,644</td>
+               <td>0</td>
+               <td>9.08</td>
+               <td>7.21</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>helloworldxmlprocess_client_ep|HelloWorldXMLProcess/helloworldxmlprocess_client</td>
+               <td>Fabric</td>
+               <td class="groupleft">1,644</td>
+               <td class="groupright">0</td>
+               <td>1,644</td>
+               <td>0</td>
+               <td>8.95</td>
+               <td>7.21</td>
+            </tr>
+            <tr>
+               <td>HelloWorldJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>RestService|HelloWorldJSProcess/RestService</td>
+               <td>Fabric</td>
+               <td class="groupleft">1,644</td>
+               <td class="groupright">0</td>
+               <td>1,644</td>
+               <td>0</td>
+               <td>8.76</td>
+               <td>7.21</td>
+            </tr>
+         </tbody></table>
+         <br>
+      </div>
+      <div class="results" xmlns="http://www.w3.org/TR/REC-html40">
+         <br>
+         <h2 id="three">4. Backups in Internal Queues (Top 10)</h2>
+         <hr>
+         <p>Aggregate statistics for the backups in internal system queues.</p>
+         <h3 id="three_b_bpel">A. BPEL SE Dispatcher Queue</h3>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="4" class="title">SOA Metadata</th>
+               <th colspan="4" class="title">Report Counts</th>
+               <th colspan="2" class="title">Cumulative Counts</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Process</th>
+               <th colspan="1" class="title">Added</th>
+               <th colspan="1" class="title">Removed</th>
+               <th colspan="1" class="title">Closed</th>
+               <th colspan="1" class="title">Faulted</th>
+               <th colspan="1" class="title">Active</th>
+               <th colspan="1" class="title">Backlog</th>
+            </tr>
+         </tbody></table>
+         <h3 id="three_b_edn">B. EDN Queue</h3>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="4" class="title">SOA Metadata</th>
+               <th colspan="4" class="title">Report Counts</th>
+               <th colspan="2" class="title">Cumulative Counts</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Event</th>
+               <th colspan="1" class="title">Added</th>
+               <th colspan="1" class="title">Removed</th>
+               <th colspan="1" class="title">Closed</th>
+               <th colspan="1" class="title">Faulted</th>
+               <th colspan="1" class="title">Active</th>
+               <th colspan="1" class="title">Backlog</th>
+            </tr>
+         </tbody></table>
+         <br>
+      </div>
+      <div class="results" xmlns="http://www.w3.org/TR/REC-html40">
+         <br>
+         <h2 id="four">5. Longest running Business Process (Top 10)</h2>
+         <hr>
+         <p>This section lists the aggregate statistics for top 
+Asynchronous and Synchronous business process instances based on 
+execution time.
+
+The statistics also include the Start Count (number of instances 
+started), Completed Count (number of instances completed) and Faulted 
+Count (number of instances faulted) during the report interval.</p>
+         <h3 id="four_a">A. Asynchronous Processes</h3>
+         <p>Top longest running asynchronous business processes.
+
+Asynchronous Process instances can get dehydrated while waiting for 
+callback to arrive. Once the callback arrives the instances are loaded 
+back by engine for further execution. This process can repeat multiple 
+times for processes with multiple callbacks. These 
+De-hydration/Re-hydration counts are captured and shown for asynchronous
+ process statistics table below. The total time the instances were 
+dehydrated is also shown (in seconds) under De-hydration Time column. 
+Finally, once a callback arrives there might be more than trivial time 
+for loaded engine to load the instance back. This is indicated by 
+Callback Processing Time.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="5" class="title">SOA Metadata</th>
+               <th colspan="5" class="title">Report Counts</th>
+               <th colspan="3" class="title">Report Times</th>
+            </tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Process Name</th>
+               <th colspan="1" class="title">Component Type</th>
+               <th colspan="1" class="title">Start Count</th>
+               <th colspan="1" class="title">Completed Count</th>
+               <th colspan="1" class="title">Faulted Count</th>
+               <th colspan="1" class="title">De-hydration Count</th>
+               <th colspan="1" class="title">Re-hydration Count</th>
+               <th colspan="1" class="title">Execution Time (ms)</th>
+               <th colspan="1" class="title">De-hydration Time (sec)</th>
+               <th colspan="1" class="title">Callback Processing Time (ms)</th>
+            </tr>
+         </tbody></table>
+         <br>
+         <h3 id="four_b">B. Synchronous Processes</h3>
+         <p>Top longest running synchronous business processes</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="5" class="title">SOA Metadata</th>
+               <th colspan="3" class="title">Report Counts</th>
+               <th colspan="1" class="title">
+            </th></tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Process Name</th>
+               <th colspan="1" class="title">Component Type</th>
+               <th colspan="1" class="title">Start Count</th>
+               <th colspan="1" class="title">Completed Count</th>
+               <th colspan="1" class="title">Faulted Count</th>
+               <th colspan="1" class="title">Execution Time (ms)</th>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldXMLJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>HelloWorldXMLJS</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>1.24</td>
+            </tr>
+            <tr>
+               <td>HelloWorldXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>HelloWorldXMLProcess</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>1.08</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>HelloWorldJSProcess</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>1.05</td>
+            </tr>
+            <tr>
+               <td>HelloWorldJSXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>HelloWorldJSXML</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>1.03</td>
+            </tr>
+         </tbody></table>
+         <br>
+      </div>
+      <div class="results" xmlns="http://www.w3.org/TR/REC-html40">
+         <br>
+         <h2 id="five">6. Most time consuming Business Process activities (Top 10)</h2>
+         <hr>
+         <p>Aggregate statistics top business process activities in terms of execution time.</p>
+         <table class="results">
+            <tbody><tr>
+               <th colspan="7" class="title">SOA Metadata</th>
+               <th colspan="3" class="title">Report Counts</th>
+               <th colspan="1" class="title">
+            </th></tr>
+            <tr>
+               <th colspan="1" class="title">Composite</th>
+               <th colspan="1" class="title">Revision</th>
+               <th colspan="1" class="title">Partition</th>
+               <th colspan="1" class="title">Activity Name</th>
+               <th colspan="1" class="title">Line Number</th>
+               <th colspan="1" class="title">Process Name</th>
+               <th colspan="1" class="title">Component Type</th>
+               <th colspan="1" class="title">Start Count</th>
+               <th colspan="1" class="title">Completed Count</th>
+               <th colspan="1" class="title">Faulted Count</th>
+               <th colspan="1" class="title">Execution Time (ms)</th>
+            </tr>
+            <tr>
+               <td>HelloWorldXMLJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>AssignXMLJS</td>
+               <td>62</td>
+               <td>HelloWorldXMLJS</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.25</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>AssignJSResult</td>
+               <td>38</td>
+               <td>HelloWorldJSProcess</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.13</td>
+            </tr>
+            <tr>
+               <td>HelloWorldXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>receiveInput</td>
+               <td>71</td>
+               <td>HelloWorldXMLProcess</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.12</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldXMLJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>receiveInput</td>
+               <td>61</td>
+               <td>HelloWorldXMLJS</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.11</td>
+            </tr>
+            <tr>
+               <td>HelloWorldJSXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>Receive1</td>
+               <td>54</td>
+               <td>HelloWorldJSXML</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.11</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>AssignXMLResult</td>
+               <td>72</td>
+               <td>HelloWorldXMLProcess</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.11</td>
+            </tr>
+            <tr>
+               <td>HelloWorldJSXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>AssignJSXMLResult</td>
+               <td>55</td>
+               <td>HelloWorldJSXML</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.1</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldXMLJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>replyOutput</td>
+               <td>69</td>
+               <td>HelloWorldXMLJS</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.09</td>
+            </tr>
+            <tr>
+               <td>HelloWorldXML</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>replyOutput</td>
+               <td>79</td>
+               <td>HelloWorldXMLProcess</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.08</td>
+            </tr>
+            <tr bgcolor="#FFFFCC">
+               <td>HelloWorldJS</td>
+               <td>1.0</td>
+               <td>default</td>
+               <td>Receive1</td>
+               <td>37</td>
+               <td>HelloWorldJSProcess</td>
+               <td>BPEL Service Engine</td>
+               <td class="groupleft">1,644</td>
+               <td>1,644</td>
+               <td class="groupright">0</td>
+               <td>0.08</td>
+            </tr>
+         </tbody></table>
+         <br>
+      </div>
+   
+</body></html>

@@ -1,0 +1,291 @@
+package ms.testapp.soa.utils;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import java.net.MalformedURLException;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+
+import javax.management.MBeanServer;
+import javax.management.MBeanServerConnection;
+
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
+
+import javax.naming.Context;
+
+import javax.naming.InitialContext;
+
+import javax.naming.NamingException;
+
+import oracle.soa.management.facade.Composite;
+import oracle.soa.management.facade.Locator;
+import oracle.soa.management.facade.LocatorFactory;
+import oracle.soa.management.util.CompositeFilter;
+
+public class DetermineServerStatus {
+  public DetermineServerStatus() {
+    super();
+  }
+
+  private static MBeanServerConnection getLocalConnection() throws NamingException {
+    InitialContext ctx = new InitialContext();
+    MBeanServer server =
+      (MBeanServer)ctx.lookup("java:comp/env/jmx/domainRuntime");
+    return server;
+  }
+
+ private static MBeanServerConnection getRemoteConnection(String hostname,
+                                                          String portString,
+                                                          String username,
+                                                          String password) throws IOException,
+                                                                                  MalformedURLException {
+    JMXConnector connector = null;
+    MBeanServerConnection connection = null;
+
+    //System.out.println("ServerDetails---Started in initConnection");
+    String protocol = "t3";
+    Integer portInteger = Integer.valueOf(portString);
+    int port = portInteger.intValue();
+    String jndiroot = "/jndi/";
+    String mserver = "weblogic.management.mbeanservers.domainruntime";
+
+    JMXServiceURL serviceURL =
+      new JMXServiceURL(protocol, hostname, port, jndiroot + mserver);
+    Hashtable h = new Hashtable();
+    h.put(Context.SECURITY_PRINCIPAL, username);
+    h.put(Context.SECURITY_CREDENTIALS, password);
+    h.put(JMXConnectorFactory.PROTOCOL_PROVIDER_PACKAGES,
+          "weblogic.management.remote");
+    connector = JMXConnectorFactory.connect(serviceURL, h);
+    connection = connector.getMBeanServerConnection();
+    return connection;
+  }
+
+ private static ObjectName getService() {
+    ObjectName service = null;
+    try {
+      service =
+          new ObjectName("com.bea:Name=DomainRuntimeService,Type=weblogic.management.mbeanservers.domainruntime.DomainRuntimeServiceMBean");
+    } catch (MalformedObjectNameException e) {
+      throw new AssertionError(e.getMessage());
+    }
+    return service;
+  }
+
+  private static String parseName(String name) {
+    Integer toChar = name.indexOf('/');
+    if (toChar.equals(-1)) {
+      return name;
+    }
+    return name.substring(0, toChar);
+  }
+
+  private static ArrayList<HashMap<String, String>> getServerDetails(MBeanServerConnection connection) throws Exception {
+    ArrayList<HashMap<String, String>> retval =
+      new ArrayList<HashMap<String, String>>();
+    HashMap<String, String> myMap = null;
+    ObjectName[] serverRT = getServerRuntimes(connection);
+    for (int i = 0; i < serverRT.length; i++) {
+      myMap = new HashMap<String, String>();
+      myMap.put("servername",
+                (String)connection.getAttribute(serverRT[i], "Name"));
+      myMap.put("listenaddress",
+                parseName((String)connection.getAttribute(serverRT[i],
+                                                          "ListenAddress")));
+      myMap.put("listenport",
+                ((Integer)connection.getAttribute(serverRT[i], "ListenPort")).toString());
+      if (myMap.get("servername").contains("soa")) {
+        retval.add(myMap);
+      }
+    }
+    return retval;
+  }
+
+  private static ObjectName[] getServerRuntimes(MBeanServerConnection connection) throws Exception {
+    return (ObjectName[])connection.getAttribute(getService(),
+                                                 "ServerRuntimes");
+  }
+
+  private static String doDetermineServerCompositesRemote(Locator loc) {
+    ArrayList<String> myList = getCompositesList(loc);
+    String retval = "";
+    for (String myComp : myList) {
+      //if (!(myComp.getState().equals("on") &&
+      //      myComp.getMode().equals("active")))
+      retval = retval + myComp + "\n";
+    }
+    return retval;
+  }
+
+  private static ArrayList<String> getCompositesList(Locator loc) {
+    ArrayList<String> retval = new ArrayList<String>();
+    try {
+      //Locator loc = LocatorFactory.createLocator();
+      List<Composite> compList = loc.getComposites(new CompositeFilter());
+
+      for (Composite myComp : compList) {
+        //if (!(myComp.getState().equals("on") &&
+        //      myComp.getMode().equals("active")))
+        retval.add(myComp.getCompositeDN().toString() + " State: " +
+                   myComp.getState() + " Loc: " + myComp.getLocation() +
+                   " Mode: " + myComp.getMode() + " Part: " +
+                   myComp.getPartition());
+      }
+
+    } catch (Exception e) {
+      retval.add(stackTraceToString(e));
+    }
+    Collections.sort(retval);
+    return retval;
+  }
+
+ public static String doDetermineServerCompositesLocal() {
+    String retval = "";
+    Locator loc = null;
+    try {
+      loc = getLocatorLocal();
+    } catch (Exception e) {
+      retval = retval + stackTraceToString(e);
+    }
+    ArrayList<String> myList = getCompositesList(loc);
+    for (String myComp : myList) {
+      //if (!(myComp.getState().equals("on") &&
+      //      myComp.getMode().equals("active")))
+      retval = retval + myComp + "\n";
+    }
+    return retval;
+  }
+
+ private static String stackTraceToString(Throwable e) {
+    String retValue = null;
+    StringWriter sw = null;
+    PrintWriter pw = null;
+    try {
+      sw = new StringWriter();
+      pw = new PrintWriter(sw);
+      e.printStackTrace(pw);
+      retValue = sw.toString();
+    } finally {
+      try {
+        if (pw != null)
+          pw.close();
+        if (sw != null)
+          sw.close();
+      } catch (IOException ignore) {
+        //System.out.println(stackTraceToString(e));
+      }
+    }
+    return retValue;
+  }
+
+  private static Locator getLocatorLocal() throws Exception {
+    return LocatorFactory.createLocator();
+  }
+
+  private static Locator getRemoteLocator(String providerURL,
+                                  String initialContextFactory, String user,
+                                  String password) {
+    Hashtable jndiProps = new Hashtable();
+
+    jndiProps.put(Context.PROVIDER_URL, providerURL);
+    jndiProps.put(Context.INITIAL_CONTEXT_FACTORY, initialContextFactory);
+    jndiProps.put(Context.SECURITY_PRINCIPAL, user);
+    jndiProps.put(Context.SECURITY_CREDENTIALS, password);
+    jndiProps.put("dedicated.connection", "true");
+    Locator locator = null;
+    try {
+      locator = LocatorFactory.createLocator(jndiProps);
+    } catch (Exception e) {
+      System.out.println(stackTraceToString(e));
+    }
+    return locator;
+  }
+
+  private static Boolean equalsArrays(ArrayList<String> input) {
+    Boolean retval = true;
+    for (Integer item = 0; item < input.size(); item++) {
+      if (item > 0) {
+        if (!(input.get(item).equals(input.get(0)))) {
+          retval = false;
+          break;
+        }
+      }
+    }
+    return retval;
+  }
+
+  private static Boolean getServerUpLocal() {
+    Boolean retval = true;
+    ArrayList<HashMap<String, String>> myServers = null;
+    try {
+      myServers = getServerDetails(getLocalConnection());
+    } catch (Exception e) {
+      System.out.println(stackTraceToString(e));
+    }
+    String providerURL = "";
+    String initialContextFactory = "weblogic.jndi.WLInitialContextFactory";
+    ArrayList<String> results = new ArrayList<String>();
+    String servername = null;
+    String listenport = null;
+    String listenaddress = null;
+
+    for (HashMap<String, String> myServer : myServers) {
+      listenport = myServer.get("listenport");
+      listenaddress = myServer.get("listenaddress");
+      providerURL = "t3://" + listenaddress + ":" + listenport + "/soa-infra";
+      System.out.println(providerURL);
+      results.add(doDetermineServerCompositesLocal());
+    }
+    return equalsArrays(results);
+  }
+
+ private static Boolean getServerUpRemote(String host, String port,
+                                          String user, String password) {
+    ArrayList<HashMap<String, String>> myServers = null;
+    try {
+      myServers =
+          getServerDetails(getRemoteConnection(host, port, user, password));
+    } catch (Exception e) {
+      System.out.println(stackTraceToString(e));
+    }
+
+    String servername = null;
+    String listenport = null;
+    String listenaddress = null;
+
+    String providerURL = "";
+    String initialContextFactory = "weblogic.jndi.WLInitialContextFactory";
+    ArrayList<String> results = new ArrayList<String>();
+    for (HashMap<String, String> myServer : myServers) {
+      servername = myServer.get("servername");
+      listenport = myServer.get("listenport");
+      listenaddress = myServer.get("listenaddress");
+      providerURL = "t3://" + listenaddress + ":" + listenport + "/soa-infra";
+      results.add(doDetermineServerCompositesRemote(getRemoteLocator(providerURL,
+                                                                     initialContextFactory,
+                                                                     user,
+                                                                     password)));
+    }
+    return equalsArrays(results);
+  }
+
+
+  public static void main(String[] args) {
+
+    String host = "xxx";
+    String port = "xxx";
+    String user = "xxx";
+    String password = "xxx";
+    System.out.println(getServerUpRemote(host, port, user, password));
+  }
+}

@@ -1,0 +1,213 @@
+mvn release:prepare
+
+[maarten@localhost myproject]$ mvn release:prepare
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building testproject 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-release-plugin:2.4.2:prepare (default-cli) @ testproject ---
+[INFO] Resuming release from phase 'scm-check-modifications'
+[INFO] Verifying that there are no local modifications...
+[INFO]   ignoring changes on: **/pom.xml.backup, **/release.properties, **/pom.xml.branch, **/pom.xml.next, **/pom.xml.releaseBackup, **/pom.xml.tag
+[INFO] Executing: /bin/sh -c cd /home/maarten/mvntest/myproject && svn --non-interactive status
+[INFO] Working directory: /home/maarten/mvntest/myproject
+[INFO] Checking dependencies and plugins for snapshots ...
+What is the release version for "testproject"? (nl.amis.smeetsm.application:testproject) 1.0: : 
+What is SCM release tag or label for "testproject"? (nl.amis.smeetsm.application:testproject) v1.0: : 
+What is the new development version for "testproject"? (nl.amis.smeetsm.application:testproject) 1.1-SNAPSHOT: : 
+[INFO] Transforming 'testproject'...
+[INFO] Not generating release POMs
+[INFO] Executing goals 'clean verify'...
+[WARNING] Maven will be executed in interactive mode, but no input stream has been configured for this MavenInvoker instance.
+[INFO] [INFO] Scanning for projects...
+[INFO] [INFO]                                                                         
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] [INFO] Building testproject 1.0
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-clean-plugin:2.4.1:clean (default-clean) @ testproject ---
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ testproject ---
+[INFO] [debug] execute contextualize
+[INFO] [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] [INFO] skip non existing resourceDirectory /home/maarten/mvntest/myproject/src/main/resources
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ testproject ---
+[INFO] [INFO] No sources to compile
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-resources-plugin:2.5:testResources (default-testResources) @ testproject ---
+[INFO] [debug] execute contextualize
+[INFO] [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] [INFO] skip non existing resourceDirectory /home/maarten/mvntest/myproject/src/test/resources
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ testproject ---
+[INFO] [INFO] No sources to compile
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-surefire-plugin:2.10:test (default-test) @ testproject ---
+[INFO] [INFO] No tests to run.
+[INFO] [INFO] Surefire report directory: /home/maarten/mvntest/myproject/target/surefire-reports
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] 
+[INFO] Results :
+[INFO] 
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-assembly-plugin:2.4.1:single (make-assembly) @ testproject ---
+[INFO] [INFO] Reading assembly descriptor: src/assembly/src.xml
+[INFO] [INFO] Building zip: /home/maarten/mvntest/myproject/target/testproject-1.0-distribution.zip
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] [INFO] BUILD SUCCESS
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] [INFO] Total time: 1.611s
+[INFO] [INFO] Finished at: Tue Oct 28 18:27:09 CET 2014
+[INFO] [INFO] Final Memory: 10M/152M
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] Checking in modified POMs...
+[INFO] Executing: /bin/sh -c cd /home/maarten/mvntest/myproject && svn --non-interactive commit --file /tmp/maven-scm-1324420045.commit --targets /tmp/maven-scm-9156507630993631453-targets
+[INFO] Working directory: /home/maarten/mvntest/myproject
+[INFO] Tagging release with the label v1.0...
+[INFO] Executing: /bin/sh -c cd /home/maarten/mvntest/myproject && svn --non-interactive copy --file /tmp/maven-scm-1347972834.commit --revision 10 file:///home/maarten/myrepository/myproject/trunk file:///home/maarten/myrepository/myproject/tags/v1.0
+[INFO] Working directory: /home/maarten/mvntest/myproject
+[INFO] Transforming 'testproject'...
+[INFO] Not removing release POMs
+[INFO] Checking in modified POMs...
+[INFO] Executing: /bin/sh -c cd /home/maarten/mvntest/myproject && svn --non-interactive commit --file /tmp/maven-scm-556265128.commit --targets /tmp/maven-scm-7129292576981656918-targets
+[INFO] Working directory: /home/maarten/mvntest/myproject
+[INFO] Release preparation complete.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 12.362s
+[INFO] Finished at: Tue Oct 28 18:27:10 CET 2014
+[INFO] Final Memory: 8M/152M
+[INFO] ------------------------------------------------------------------------
+
+mvn release:perform
+
+[maarten@localhost myproject]$ mvn release:perform
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building testproject 1.2-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-release-plugin:2.4.2:perform (default-cli) @ testproject ---
+[INFO] Checking out the project to perform the release ...
+[INFO] Executing: /bin/sh -c cd /home/maarten/mvntest/myproject/target && svn --non-interactive checkout file:///home/maarten/myrepository/myproject/tags/v1.1 /home/maarten/mvntest/myproject/target/checkout
+[INFO] Working directory: /home/maarten/mvntest/myproject/target
+[INFO] Invoking perform goals in directory /home/maarten/mvntest/myproject/target/checkout
+[INFO] Executing goals 'deploy'...
+[WARNING] Maven will be executed in interactive mode, but no input stream has been configured for this MavenInvoker instance.
+[INFO] [INFO] Scanning for projects...
+[INFO] [WARNING] 
+[INFO] [WARNING] Some problems were encountered while building the effective model for nl.amis.smeetsm.application:testproject:jar:1.1
+[INFO] [WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-javadoc-plugin is missing.
+[INFO] [WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-source-plugin is missing.
+[INFO] [WARNING] 
+[INFO] [WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[INFO] [WARNING] 
+[INFO] [WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[INFO] [WARNING] 
+[INFO] [INFO]                                                                         
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] [INFO] Building testproject 1.1
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ testproject ---
+[INFO] [debug] execute contextualize
+[INFO] [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] [INFO] skip non existing resourceDirectory /home/maarten/mvntest/myproject/target/checkout/src/main/resources
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-compiler-plugin:2.3.2:compile (default-compile) @ testproject ---
+[INFO] [INFO] No sources to compile
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-resources-plugin:2.5:testResources (default-testResources) @ testproject ---
+[INFO] [debug] execute contextualize
+[INFO] [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] [INFO] skip non existing resourceDirectory /home/maarten/mvntest/myproject/target/checkout/src/test/resources
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-compiler-plugin:2.3.2:testCompile (default-testCompile) @ testproject ---
+[INFO] [INFO] No sources to compile
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-surefire-plugin:2.10:test (default-test) @ testproject ---
+[INFO] [INFO] No tests to run.
+[INFO] [INFO] Surefire report directory: /home/maarten/mvntest/myproject/target/checkout/target/surefire-reports
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] 
+[INFO] Results :
+[INFO] 
+[INFO] Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] [INFO] 
+[INFO] [INFO] >>> maven-source-plugin:2.4:jar (attach-sources) @ testproject >>>
+[INFO] [INFO] 
+[INFO] [INFO] <<< maven-source-plugin:2.4:jar (attach-sources) @ testproject <<<
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-source-plugin:2.4:jar (attach-sources) @ testproject ---
+[INFO] [INFO] No sources in project. Archive not created.
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-javadoc-plugin:2.10.1:jar (attach-javadocs) @ testproject ---
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-assembly-plugin:2.4.1:single (make-assembly) @ testproject ---
+[INFO] [INFO] Reading assembly descriptor: src/assembly/src.xml
+[INFO] [INFO] Building zip: /home/maarten/mvntest/myproject/target/checkout/target/testproject-1.1-distribution.zip
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-install-plugin:2.3.1:install (default-install) @ testproject ---
+[INFO] [INFO] No primary artifact to install, installing attached artifacts instead.
+[INFO] [INFO] Installing /home/maarten/mvntest/myproject/target/checkout/pom.xml to /home/maarten/.m2/repository/nl/amis/smeetsm/application/testproject/1.1/testproject-1.1.pom
+[INFO] [INFO] Installing /home/maarten/mvntest/myproject/target/checkout/target/testproject-1.1-distribution.zip to /home/maarten/.m2/repository/nl/amis/smeetsm/application/testproject/1.1/testproject-1.1-distribution.zip
+[INFO] [INFO] 
+[INFO] [INFO] --- maven-deploy-plugin:2.7:deploy (default-deploy) @ testproject ---
+[INFO] [INFO] Skipping artifact deployment
+[INFO] [INFO] 
+[INFO] [INFO] --- nexus-staging-maven-plugin:1.5.1:deploy (default-deploy) @ testproject ---
+[INFO] [INFO] No primary artifact to deploy, deploying attached artifacts instead.
+[INFO] [INFO] Performing deferred deploys (gathering into "/home/maarten/mvntest/myproject/target/checkout/target/nexus-staging/deferred")...
+[INFO] [INFO] Installing /home/maarten/mvntest/myproject/target/checkout/pom.xml to /home/maarten/mvntest/myproject/target/checkout/target/nexus-staging/deferred/nl/amis/smeetsm/application/testproject/1.1/testproject-1.1.pom
+[INFO] [INFO] Installing /home/maarten/mvntest/myproject/target/checkout/target/testproject-1.1-distribution.zip to /home/maarten/mvntest/myproject/target/checkout/target/nexus-staging/deferred/nl/amis/smeetsm/application/testproject/1.1/testproject-1.1-distribution.zip
+[INFO] [INFO] Deploying remotely...
+[INFO] [INFO] Bulk deploying locally gathered artifacts from directory: 
+[INFO] [INFO]  * Bulk deploying locally gathered snapshot artifacts to URL http://localhost:8081/nexus/content/repositories/releases/
+[INFO] Uploading: http://localhost:8081/nexus/content/repositories/releases/nl/amis/smeetsm/application/testproject/1.1/testproject-1.1.pom
+[INFO] 2/4 KB   
+[INFO] 4/4 KB   
+[INFO]          
+[INFO] Uploaded: http://localhost:8081/nexus/content/repositories/releases/nl/amis/smeetsm/application/testproject/1.1/testproject-1.1.pom (4 KB at 21.3 KB/sec)
+[INFO] Downloading: http://localhost:8081/nexus/content/repositories/releases/nl/amis/smeetsm/application/testproject/maven-metadata.xml
+[INFO] 314/314 B   
+[INFO]             
+[INFO] Downloaded: http://localhost:8081/nexus/content/repositories/releases/nl/amis/smeetsm/application/testproject/maven-metadata.xml (314 B at 12.3 KB/sec)
+[INFO] Uploading: http://localhost:8081/nexus/content/repositories/releases/nl/amis/smeetsm/application/testproject/maven-metadata.xml
+[INFO] 343/343 B   
+[INFO]             
+[INFO] Uploaded: http://localhost:8081/nexus/content/repositories/releases/nl/amis/smeetsm/application/testproject/maven-metadata.xml (343 B at 10.5 KB/sec)
+[INFO] Uploading: http://localhost:8081/nexus/content/repositories/releases/nl/amis/smeetsm/application/testproject/1.1/testproject-1.1-distribution.zip
+[INFO] 460/460 B   
+[INFO]             
+[INFO] Uploaded: http://localhost:8081/nexus/content/repositories/releases/nl/amis/smeetsm/application/testproject/1.1/testproject-1.1-distribution.zip (460 B at 10.7 KB/sec)
+[INFO] [INFO]  * Bulk deploy of locally gathered snapshot artifacts finished.
+[INFO] [INFO] Remote deploy finished with success.
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] [INFO] BUILD SUCCESS
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] [INFO] Total time: 3.438s
+[INFO] [INFO] Finished at: Tue Oct 28 19:29:48 CET 2014
+[INFO] [INFO] Final Memory: 21M/220M
+[INFO] [INFO] ------------------------------------------------------------------------
+[INFO] Cleaning up after release...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 5.942s
+[INFO] Finished at: Tue Oct 28 19:29:48 CET 2014
+[INFO] Final Memory: 8M/152M
+[INFO] ------------------------------------------------------------------------

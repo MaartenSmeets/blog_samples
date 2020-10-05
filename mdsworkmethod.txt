@@ -1,0 +1,60 @@
+ public static void work()  
+  {  
+   try  
+   {  
+    MDSInstance mdsInstance = null;  
+    if (true)  
+    {  
+     mdsInstance = MDSUtils.initializeDBStore("soa_mds_user",   
+                          "soa_mds_pass",   
+                          "jdbc:oracle:thin:@hostname:port/sid",   
+                          "soa-infra",  
+                          MDS_CONNECTION_NAME);  
+    }  
+   
+    Boolean foundDocument = false;  
+    // Find a resource  
+    if (true)  
+    {  
+     List<ResourceName> list = MDSUtils.findResource(mdsInstance, "/deployed-composites/", false);  
+     List<ResourceName> listinner = null;  
+     List<String> path = new ArrayList<String>();  
+     List<Boolean> type = new ArrayList<Boolean>();   
+     System.out.println("List: (" + list.size() + " element(s))");  
+     for (ResourceName rn : list) {  
+       path.add(rn.getAbsoluteName());  
+       type.add(rn.isPackageName());  
+     }  
+       
+     ResourceName rn = null;  
+       
+     for (int i = 0; i < list.size() ; i++) {  
+       rn = list.get(i);  
+       foundDocument = false;  
+       if (rn.isPackageName()) {  
+         for (int j = 0 ; j<path.size();j++ ) {  
+           if (path.get(j).startsWith(rn.getAbsoluteName())) {  
+             if (!type.get(j)) {  
+               foundDocument = true;  
+               break;    
+             }  
+           }  
+         }  
+         if (!foundDocument) {  
+           try {  
+             MDSUtils.deleteResource(mdsInstance, rn);  
+           } catch (Exception e) {  
+             System.out.print("");  
+           }  
+           System.out.println("Deleted: "+rn.getAbsoluteName());  
+         }  
+       }  
+     }  
+    }  
+    System.out.println("Done");  
+   }  
+   catch (Exception e)  
+   {  
+    e.printStackTrace();  
+   }  
+  } 

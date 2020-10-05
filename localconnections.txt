@@ -1,0 +1,205 @@
+package ms.testapp.soa.utils;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.management.MBeanServer;
+import javax.management.MBeanServerConnection;
+
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class DetermineServerStatus extends HttpServlet {
+  public DetermineServerStatus() {
+    super();
+  }
+
+  private static MBeanServerConnection getLocalConnection() throws NamingException {
+    InitialContext ctx = new InitialContext();
+    MBeanServer server =
+      (MBeanServer)ctx.lookup("java:comp/env/jmx/domainRuntime");
+    return server;
+  }
+
+  private static ObjectName getService() {
+    ObjectName service = null;
+    try {
+      service =
+          new ObjectName("com.bea:Name=DomainRuntimeService,Type=weblogic.management.mbeanservers.domainruntime.DomainRuntimeServiceMBean");
+    } catch (MalformedObjectNameException e) {
+      throw new AssertionError(e.getMessage());
+    }
+    return service;
+  }
+
+  private static String parseName(String name) {
+    Integer toChar = name.indexOf('/');
+    if (toChar.equals(-1)) {
+      return name;
+    }
+    return name.substring(0, toChar);
+  }
+
+  private static ArrayList<HashMap<String, String>> getServerDetails(MBeanServerConnection connection) throws Exception {
+    ArrayList<HashMap<String, String>> retval =
+      new ArrayList<HashMap<String, String>>();
+    HashMap<String, String> myMap = null;
+    ObjectName[] serverRT = getServerRuntimes(connection);
+    for (int i = 0; i < serverRT.length; i++) {
+      myMap = new HashMap<String, String>();
+      myMap.put("servername",
+                (String)connection.getAttribute(serverRT[i], "Name"));
+      myMap.put("listenaddress",
+                parseName((String)connection.getAttribute(serverRT[i],
+                                                          "ListenAddress")));
+      myMap.put("listenport",
+                ((Integer)connection.getAttribute(serverRT[i], "ListenPort")).toString());
+      if (myMap.get("servername").contains("soa")) {
+        retval.add(myMap);
+      }
+    }
+    return retval;
+  }
+
+
+  private static ObjectName[] getServerRuntimes(MBeanServerConnection connection) throws Exception {
+    return (ObjectName[])connection.getAttribute(getService(),
+                                                 "ServerRuntimes");
+  }
+
+  private static String stackTraceToString(Throwable e) {
+    String retValue = null;
+    StringWriter sw = null;
+    PrintWriter pw = null;
+    try {
+      sw = new StringWriter();
+      pw = new PrintWriter(sw);
+      e.printStackTrace(pw);
+      retValue = sw.toString();
+    } finally {
+      try {
+        if (pw != null)
+          pw.close();
+        if (sw != null)
+          sw.close();
+      } catch (IOException ignore) {
+        //System.out.println(stackTraceToString(e));
+      }
+    }
+    return retValue;
+  }
+
+  private static Boolean equalsArrays(ArrayList<String> input) {
+    Boolean retval = true;
+    for (Integer item = 0; item < input.size(); item++) {
+      if (item > 0) {
+        if (!(input.get(item).equals(input.get(0)))) {
+          retval = false;
+          break;
+        }
+      }
+    }
+    return retval;
+  }
+
+  private static String sendHttpRequest(String p_url,String p_in) throws IOException {
+    String retval = "";
+    URL url = new URL(p_url);
+
+    String type = "text/xml";
+   
+    HttpURLConnection conn = (HttpURLConnection)new URL(p_url).openConnection(); 
+    conn.setRequestMethod( "POST" ); 
+    conn.setRequestProperty( "Content-Type", type );
+    conn.setRequestProperty( "Content-Length", ((Integer)p_in.length()).toString() );
+    conn.setDoOutput( true );
+    conn.setDoInput(true);
+    conn.setUseCaches(false);
+   
+    DataOutputStream wr = new DataOutputStream(conn.getOutputStream()); 
+    wr.writeBytes(p_in); 
+    wr.flush(); 
+    wr.close();
+   
+    // Get the response
+    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    String line;
+    while ((line = rd.readLine()) != null) {
+      retval = retval + line;
+    }
+    rd.close();
+    return retval;
+  }
+
+  public static Boolean getServerUpLocal() {
+    Boolean retval = true;
+    ArrayList<HashMap<String, String>> myServers = null;
+    try {
+      myServers = getServerDetails(getLocalConnection());
+    } catch (Exception e) {
+      System.out.println(stackTraceToString(e));
+    }
+    String URL = "";
+    String initialContextFactory = "weblogic.jndi.WLInitialContextFactory";
+    ArrayList<String> results = new ArrayList<String>();
+    String servername = null;
+    String listenport = null;
+    String listenaddress = null;
+
+    for (HashMap<String, String> myServer : myServers) {
+      listenport = myServer.get("listenport");
+      listenaddress = myServer.get("listenaddress");
+      URL =
+          "http://" + listenaddress + ":" + listenport + "/soa-infra/services/default/DetermineServerStatus/determineserverstatusbpel_client_ep";
+      results.add(URL);
+      //determine http response from server here
+
+      try {
+        results.add(sendHttpRequest(URL,"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:det=\"http://xmlns.oracle.com/APP/DetermineServerStatus/DetermineServerStatusBPEL\">\n" +
+        "   <soapenv:Header/>\n" +
+        "   <soapenv:Body>\n" +
+        "      <det:process>\n" +
+        "         <det:input>?</det:input>\n" +
+        "      </det:process>\n" +
+        "   </soapenv:Body>\n" +
+        "</soapenv:Envelope>"));
+      } catch (IOException e) {
+        results.add(stackTraceToString(e));
+      }
+    }
+    return equalsArrays(results);
+  }
+
+  public void doPost(HttpServletRequest request,
+                     HttpServletResponse response) throws ServletException,
+                                                          IOException {
+    doGet(request, response);
+  }
+
+  public void doGet(HttpServletRequest request,
+                    HttpServletResponse response) throws ServletException,
+                                                         IOException {
+    PrintWriter out = response.getWriter();
+    out.println(DetermineServerStatus.getServerUpLocal());
+  }
+}
+
